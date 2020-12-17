@@ -18,7 +18,7 @@ export class ChatService {
         this.ws.disconnect()
     }
 
-    public getMemberList(gymId: string): Observable<any> {
+    public getMemberList(gymId: string): Observable<any> | undefined {
         return this.ws.getChannel('member', { gymId: gymId })
     }
 

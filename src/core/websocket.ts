@@ -7,7 +7,7 @@ import { webSocketOptions } from './types'
 export class WebSocket {
     private url: string
     private userId: string
-    private webSocketSubject$: WebSocketSubject<any>
+    private webSocketSubject$: WebSocketSubject<any> | null
 
     constructor(options: webSocketOptions) {
         const { url, userId } = options
@@ -37,20 +37,12 @@ export class WebSocket {
         })
     }
 
-    private getMessage(
-        type: string,
-        subject: string,
-        method: string,
-        data: any
-    ): Message {
-        return new Message(type, subject, method, {
-            ...data,
-            userId: this.userId,
-        })
+    private getMessage(type: string, subject: string | null, method: string | null, data: any): Message {
+        return new Message(type, subject, method, { ...data, userId: this.userId })
     }
 
     private send(message: Message) {
-        this.webSocketSubject$.next(message)
+        this.webSocketSubject$?.next(message)
     }
 
     public connect() {
@@ -68,16 +60,11 @@ export class WebSocket {
         }
     }
 
-    public getChannel(subject: string, data: any): Observable<any> {
+    public getChannel(subject: string, data: any): Observable<any> | undefined {
         let subMsg: Message = this.getMessage('subscribe', subject, null, data)
-        let unsubMsg: Message = this.getMessage(
-            'unsubscribe',
-            subject,
-            null,
-            data
-        )
+        let unsubMsg: Message = this.getMessage('unsubscribe', subject, null, data)
 
-        return this.webSocketSubject$.multiplex(
+        return this.webSocketSubject$?.multiplex(
             () => subMsg,
             () => unsubMsg,
             (message) => message.subject === subject

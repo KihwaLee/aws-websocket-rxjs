@@ -3,8 +3,8 @@ export class Message {
 
     constructor(
         public type: string, // publish, subscribe, unsubscribe
-        public subject: string,
-        public method: string, // create, update, delete
+        public subject: string | null,
+        public method: string | null, // create, update, delete
         public data: any
     ) {
         this.action = 'message'
