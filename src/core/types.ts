@@ -1,4 +1,4 @@
 export type webSocketOptions = {
-    url: string,
+    url: string
     userId: string
 }

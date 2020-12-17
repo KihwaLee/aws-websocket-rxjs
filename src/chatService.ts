@@ -1,30 +1,28 @@
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs'
 
 import { WebSocket } from './core/websocket'
 import { webSocketOptions } from './core/types'
 
 export class ChatService {
+    ws: WebSocket
 
-  ws: WebSocket
+    constructor(options: webSocketOptions) {
+        this.ws = new WebSocket(options)
+    }
 
-  constructor(options: webSocketOptions) {
-    this.ws = new WebSocket(options)
-  }
-   
-  public connect(): void {
-    this.ws.connect()
-  }
+    public connect(): void {
+        this.ws.connect()
+    }
 
-  public disconnect(): void {
-    this.ws.disconnect()
-  }
+    public disconnect(): void {
+        this.ws.disconnect()
+    }
 
-  public getMemberList(gymId: string): Observable<any> {
-    return this.ws.getChannel('member', { gymId: gymId })
-  }
+    public getMemberList(gymId: string): Observable<any> {
+        return this.ws.getChannel('member', { gymId: gymId })
+    }
 
-  public setMember(gymId: string): void {
-    this.ws.publish('member', 'create', { gymId: gymId })
-  }
-  
+    public setMember(gymId: string): void {
+        this.ws.publish('member', 'create', { gymId: gymId })
+    }
 }
