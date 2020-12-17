@@ -10,6 +10,7 @@
     },
     "rules": {
         "new-cap": "off",
+        "require-jsdoc": "off",
         "valid-jsdoc": "off",
         "prettier/prettier": [
             "error",
